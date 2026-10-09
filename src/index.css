@@ -1,0 +1,254 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ------------------------------------------------------------------
+   Design tokens — "private opera box": smoky plum velvet, rose gold
+   used sparingly, dusty lavender as the secondary accent.
+   Every colour/font/radius utility on the page resolves to these vars.
+------------------------------------------------------------------- */
+@theme {
+  /* Velvet scale (cool plum-violet only — never brown, never black) */
+  --color-velvet-deep: #1c1520;
+  --color-velvet-bg: #251c28;
+  --color-velvet-surface: #2f2533;
+  --color-velvet-elevated: #3a2e3f;
+  --color-velvet-hover: #3f3345;
+  --color-velvet-border: #4a3d50;
+  --color-velvet-plum: #5e3f6e;
+  --color-velvet-muted: #847a8a;
+  --color-velvet-secondary: #b3a8b8;
+
+  /* Accents */
+  --color-rose-gold: #c9a38a;
+  --color-rose-gold-hover: #d6b39c;
+  --color-rose-gold-pressed: #b08b73;
+  --color-lavender: #9a8bae;
+  --color-rose-white: #efe8e8;
+  --color-rose-white-light: #f7f2f1;
+  --color-sage: #7fa38f;
+  --color-dusty-rose: #c47e86;
+
+  /* Typography.
+     Cinzel and Plus Jakarta Sans ship without basic Cyrillic, so each stack
+     falls back per glyph to a Cyrillic-complete face of the same character:
+     Cinzel -> Playfair Display (high-contrast didone), Jakarta -> Manrope. */
+  --font-heading: "Cinzel Variable", "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  --font-display: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  --font-body: "Lora Variable", "Lora", Georgia, "Times New Roman", serif;
+  --font-ui: "Plus Jakarta Sans Variable", "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Radii: 8–10px per brief */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  --shadow-logo: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* shadcn/ui semantic tokens mapped onto the velvet palette */
+:root {
+  --background: var(--color-velvet-bg);
+  --foreground: var(--color-rose-white);
+  --card: var(--color-velvet-surface);
+  --card-foreground: var(--color-rose-white);
+  --popover: var(--color-velvet-elevated);
+  --popover-foreground: var(--color-rose-white);
+  --primary: var(--color-rose-gold);
+  --primary-foreground: var(--color-velvet-deep);
+  --secondary: var(--color-velvet-elevated);
+  --secondary-foreground: var(--color-rose-white);
+  --muted: var(--color-velvet-surface);
+  --muted-foreground: var(--color-velvet-secondary);
+  --accent: var(--color-velvet-hover);
+  --accent-foreground: var(--color-rose-white-light);
+  --destructive: var(--color-dusty-rose);
+  --border: var(--color-velvet-border);
+  --input: var(--color-velvet-border);
+  --ring: var(--color-lavender);
+  --header-h: 4rem;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-velvet-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-velvet-bg);
+    /* Barely-visible velvet grain + a dim plum light falling from above */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .94 0 0 0 0 .9 0 0 0 0 .93 0 0 0 .055 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(120% 60% at 72% -12%, rgb(94 63 110 / 0.34), transparent 62%);
+    background-repeat: repeat, no-repeat;
+    color: var(--color-rose-white);
+    font-family: var(--font-body);
+    font-feature-settings: "kern", "liga";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: 0.005em;
+    color: var(--color-rose-white-light);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  strong {
+    font-weight: 600;
+    color: var(--color-rose-white-light);
+  }
+
+  ::selection {
+    background: rgb(154 139 174 / 0.4);
+    color: var(--color-rose-white-light);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lavender);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Signature devices
+------------------------------------------------------------------- */
+@layer components {
+  /* Thin double line, like the border of a theatre programme.
+     Used only for VIP and bonus blocks. */
+  .programme-frame {
+    position: relative;
+    border: 1px solid rgb(201 163 138 / 0.42);
+    border-radius: var(--radius-lg);
+  }
+  .programme-frame::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgb(201 163 138 / 0.18);
+    border-radius: calc(var(--radius-lg) - 4px);
+    pointer-events: none;
+  }
+
+  /* Soft arch: the shape of a box opening seen from the stalls */
+  .arch {
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+  }
+  .arch-frame::before {
+    border-radius: 999px 999px calc(var(--radius-lg) - 4px) calc(var(--radius-lg) - 4px);
+  }
+
+  /* Velvet curtain folds with a very slow, very faint sheen */
+  .curtain {
+    position: relative;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        rgb(239 232 232 / 0) 0px,
+        rgb(239 232 232 / 0.028) 14px,
+        rgb(28 21 32 / 0.16) 30px,
+        rgb(239 232 232 / 0) 42px
+      ),
+      linear-gradient(180deg, var(--color-velvet-elevated) 0%, var(--color-velvet-surface) 70%);
+  }
+  .curtain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 35%,
+      rgb(214 179 156 / 0.075) 48%,
+      rgb(154 139 174 / 0.05) 54%,
+      transparent 66%
+    );
+    background-size: 260% 100%;
+    background-position: 120% 0;
+    animation: curtain-sheen 14s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  .hairline-x {
+    background: linear-gradient(90deg, transparent, var(--color-velvet-border) 18%, var(--color-velvet-border) 82%, transparent);
+    height: 1px;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-velvet-border) transparent;
+  }
+}
+
+@keyframes curtain-sheen {
+  0%,
+  100% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: -20% 0;
+  }
+}
